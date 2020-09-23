@@ -13,18 +13,45 @@ class RecipeTest < Minitest::Test
      assert_equal expected, recipe1.ingredients_required
    end
 
-  def it_can_add_required_ingedients
+  def test_it_can_add_required_ingedients_and_check_ingredients
     ingredient1 = Ingredient.new({name: "Cheese", unit: "C", calories: 100})
     ingredient2 = Ingredient.new({name: "Macaroni", unit: "oz", calories: 30})
     recipe1 = Recipe.new("Mac and Cheese")
-    recipe1.name
-   recipe1.ingredients_required
-   recipe1.add_ingredient(ingredient1, 2)
-   recipe1.add_ingredient(ingredient1, 4)
-   recipe1.add_ingredient(ingredient2, 8)
-   recipe1.ingredients_required
-     # => {#<Ingredient:0x00007fd7811553c8...> => 6, #<Ingredient:0x00007fd78110b0e8...> => 8}
-   # recipe1.ingredients
-   # # => [#<Ingredient:0x007fe8438c7a70...>, #<Ingredient:0x007fe843857f40...>]
+    recipe1.add_ingredient(ingredient1, 2)
+    recipe1.add_ingredient(ingredient1, 4)
+    recipe1.add_ingredient(ingredient2, 8)
+    expected = {
+              ingredient1 => 6,
+              ingredient2 => 8
+              }
+    assert_equal expected, recipe1.ingredients_required
+    assert_equal [ingredient1, ingredient2], recipe1.ingredients
  end
+
+ def test_total_calories
+    ingredient1 = Ingredient.new({name: "Cheese", unit: "C", calories: 100})
+    ingredient2 = Ingredient.new({name: "Macaroni", unit: "oz", calories: 30})
+    recipe1 = Recipe.new("Mac and Cheese")
+     recipe1.add_ingredient(ingredient1, 2)
+     recipe1.add_ingredient(ingredient2, 8)
+     ingredient3 = Ingredient.new({name: "Ground Beef", unit: "oz", calories: 100})
+
+     ingredient4 = Ingredient.new({name: "Bun", unit: "g", calories: 75})
+    # => #<Ingredient:0x00007faae694bb80...>
+
+     recipe2 = Recipe.new("Cheese Burger")
+    # => #<Recipe:0x00007faae692a110...>
+
+     recipe2.add_ingredient(ingredient1, 2)
+
+     recipe2.add_ingredient(ingredient3, 4)
+
+     recipe2.add_ingredient(ingredient4, 1)
+
+     recipe1.total_calories
+    # => 440
+
+     recipe2.total_calories
+  end
+    # => 675
 end
