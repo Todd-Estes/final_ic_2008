@@ -10,10 +10,16 @@ class Recipe
   end
 
   def ingredients
-    # ingredient_hash
     @ingredients_required.map do |ingredient_obj, quantity|
       ingredient_obj
     end
   end
+
+  def total_calories
+    @ingredients_required.sum do |ingredient_obj, quantity|
+      ingredient_obj.calories * quantity
+    end
+  end
+
 
 end
